@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Model;
+
+class WebhookEvent extends Model
+{
+    use HasUlids, SoftDeletes;
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'provider',
+        'event_type',
+        'event_id',
+        'payload',
+        'signature',
+        'processed',
+        'processed_at',
+    ];
+
+    protected $casts = [
+        'payload' => 'array',
+        'processed' => 'boolean',
+        'processed_at' => 'datetime:Y-m-d H:i:s.u',
+        'created_at' => 'datetime:Y-m-d H:i:s.u',
+    ];
+
+    protected $dates = [
+        'processed_at',
+        'created_at',
+    ];
+}
