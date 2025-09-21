@@ -1,61 +1,214 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Buyvia - Multi-tenant E-commerce Platform
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel 12">
+  <img src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php" alt="PHP 8.2+">
+  <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql" alt="MySQL 8.0">
+  <img src="https://img.shields.io/badge/Redis-7.0-DC382D?style=for-the-badge&logo=redis" alt="Redis 7.0">
 </p>
 
-## About Laravel
+## About Buyvia
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Buyvia is a modern, multi-tenant e-commerce platform built with Laravel 12. It's designed as a monolithic application with clean architecture principles, providing a scalable foundation for SaaS e-commerce solutions.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 🏗️ Architecture Highlights
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Multi-tenant SaaS architecture** with tenant isolation at database level
+- **Composite primary keys** for robust data separation
+- **Service layer pattern** for clean business logic separation
+- **DTO (Data Transfer Objects)** for type-safe data handling
+- **Redis-based shopping carts** for high performance
+- **Event-driven architecture** with outbox pattern for integrations
 
-## Learning Laravel
+### 🚀 Current Status: Phase 1 - Database Foundation Complete
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+✅ **Completed:**
+- Multi-tenant database schema with composite keys
+- 23 database migrations with proper relationships
+- Core models: Products, Variants, Categories, Customers, Orders, Inventory
+- Composite key relationships using Compoships package
+- ULID-based primary keys for distributed-friendly IDs
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+🚧 **In Progress:**
+- Foundation architecture (Services, DTOs, Controllers)
+- API endpoint structure
+- Multi-tenancy middleware and authentication
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📋 Features
 
-## Laravel Sponsors
+### Core E-commerce Functionality
+- **Product Management** - Products, variants, categories with hierarchical support
+- **Inventory Management** - Real-time stock tracking, reservations, movements
+- **Customer Management** - Customer profiles, addresses, order history
+- **Order Processing** - Order lifecycle management, payment tracking
+- **Multi-tenant Architecture** - Complete data isolation between tenants
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Technical Features
+- **Composite Primary Keys** - Robust multi-tenant data separation
+- **ULID Primary Keys** - Time-ordered, URL-safe identifiers
+- **Event Sourcing Ready** - Outbox pattern for reliable event publishing
+- **Redis Integration** - High-performance cart and session management
+- **Audit Logging** - Complete action and change tracking
+- **Webhook Support** - External service integrations
 
-### Premium Partners
+## 🛠️ Technology Stack
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- **Backend:** Laravel 12 (PHP 8.2+)
+- **Database:** MySQL 8.0 with InnoDB
+- **Cache/Queue:** Redis 7.0
+- **Search:** Elasticsearch (planned)
+- **Files:** MongoDB (for unstructured content)
+- **Authentication:** Laravel Sanctum
 
-## Contributing
+## 📦 Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Prerequisites
+- PHP 8.2 or higher
+- Composer
+- MySQL 8.0
+- Redis 7.0
+- Node.js (for asset compilation)
 
-## Code of Conduct
+### Setup Steps
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. **Clone the repository**
+   ```bash
+   git clone [repository-url]
+   cd Buyvia
+   ```
 
-## Security Vulnerabilities
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+3. **Environment setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## License
+4. **Configure database**
+   - Update `.env` with your MySQL credentials
+   - Update `.env` with your Redis credentials
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+5. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+6. **Install Node dependencies** (when frontend is added)
+   ```bash
+   npm install
+   npm run build
+   ```
+
+## 🗄️ Database Architecture
+
+### Multi-tenant Design
+All tenant-scoped tables use composite primary keys with `tenant_id`:
+- `products` - (`tenant_id`, `id`)
+- `product_variants` - (`tenant_id`, `id`)
+- `categories` - (`tenant_id`, `id`)
+- `customers` - (`tenant_id`, `id`)
+- `orders` - (`tenant_id`, `id`)
+- `inventory_levels` - (`tenant_id`, `sku`, `location_id`)
+
+### Key Features
+- **Composite Foreign Keys** - Proper referential integrity across tenants
+- **Generated Columns** - JSON attribute indexing for fast queries
+- **Soft Deletes** - Data retention with logical deletion
+- **Timestamps** - Microsecond precision tracking
+
+## 🏗️ Architecture
+
+### Directory Structure
+```
+app/
+├── Http/Controllers/     # Thin controllers by domain
+│   ├── Catalog/         # Product management
+│   ├── Inventory/       # Stock management
+│   ├── Orders/          # Order processing
+│   └── Payments/        # Payment handling
+├── Services/            # Business logic layer
+├── DTOs/                # Data transfer objects
+├── Models/              # Eloquent models
+├── Policies/            # Authorization logic
+└── Support/             # Utilities and value objects
+```
+
+### Design Patterns
+- **Service Layer** - Centralized business logic
+- **Repository Pattern** - Data access abstraction
+- **DTO Pattern** - Type-safe data transfer
+- **Event Sourcing** - Audit trail and integrations
+
+## 🧪 Testing
+
+Run the test suite:
+```bash
+php artisan test
+```
+
+Run specific test types:
+```bash
+# Unit tests
+php artisan test --testsuite=Unit
+
+# Feature tests
+php artisan test --testsuite=Feature
+```
+
+## 📈 Development Roadmap
+
+### Phase 1: Foundation Architecture ✅
+- Database schema and migrations
+- Core models with composite keys
+- Basic relationships
+
+### Phase 2: Service Layer 🚧
+- Business logic services
+- DTO implementation
+- Controller structure
+
+### Phase 3: Authentication & Multi-tenancy
+- Tenant resolution middleware
+- API authentication
+- Authorization policies
+
+### Phase 4: Core Features
+- Product catalog management
+- Inventory tracking
+- Customer management
+- Basic order processing
+
+### Phase 5: Advanced Features
+- Payment processing
+- Advanced inventory
+- Reporting & analytics
+- Search functionality
+
+## 📚 Documentation
+
+- **[CLAUDE.md](./CLAUDE.md)** - Architecture guidelines and conventions
+- **[PLANNING.md](./PLANNING.md)** - Development sessions and decisions log
+- **API Documentation** - Coming soon
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔧 Support
+
+For support and questions:
+- Create an issue in this repository
+- Check the documentation in `CLAUDE.md`
+- Review development notes in `PLANNING.md`

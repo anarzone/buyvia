@@ -12,15 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inventory_levels', function (Blueprint $table) {
-            $table->ulid('tenant_id', 16);
+            $table->ulid('tenant_id');
             $table->string('sku', 64);
             $table->string('location_id', 32)->default('default');
             $table->integer('on_hand');
             $table->integer('reserved')->default(0);
             $table->timestamp('updated_at', 6);
-            
+
             $table->primary(['tenant_id', 'sku', 'location_id']);
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('restrict');
+            $table->foreign(['tenant_id','sku'])
+                ->references(['tenant_id','sku'])->on('product_variants')
+                ->onDelete('restrict');
         });
     }
 

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_category', function (Blueprint $table) {
-            $table->ulid('tenant_id', 16);
-            $table->ulid('product_id', 16);
-            $table->ulid('category_id', 16);
+            $table->ulid('tenant_id');
+            $table->ulid('product_id');
+            $table->ulid('category_id');
             
             $table->primary(['tenant_id', 'product_id', 'category_id']);
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('restrict');

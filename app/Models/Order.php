@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use App\Enums\OrderStatus;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
-    use HasUlids, SoftDeletes;
+    use SoftDeletes, Compoships;
 
     protected $fillable = [
         'tenant_id',
@@ -38,6 +40,7 @@ class Order extends Model
     ];
 
     protected $casts = [
+        'status' => OrderStatus::class,
         'subtotal_cents' => 'integer',
         'discount_cents' => 'integer',
         'tax_cents' => 'integer',
@@ -53,6 +56,25 @@ class Order extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s.u',
     ];
 
+    public function getKeyName(): array
+    {
+        return ['tenant_id', 'id'];
+    }
+
+    protected $primaryKey = ['tenant_id', 'id'];
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::ulid();
+            }
+        });
+    }
+
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
@@ -60,31 +82,26 @@ class Order extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'id')
-                    ->where('tenant_id', $this->tenant_id);
+        return $this->belongsTo(Customer::class, ['tenant_id', 'customer_id'], ['tenant_id', 'id']);
     }
 
     public function items(): HasMany
     {
-        return $this->hasMany(OrderItem::class, 'order_id', 'id')
-                    ->where('tenant_id', $this->tenant_id);
+        return $this->hasMany(OrderItem::class, ['tenant_id', 'order_id'], ['tenant_id', 'id']);
     }
 
     public function payments(): HasMany
     {
-        return $this->hasMany(Payment::class, 'order_id', 'id')
-                    ->where('tenant_id', $this->tenant_id);
+        return $this->hasMany(Payment::class, ['tenant_id', 'order_id'], ['tenant_id', 'id']);
     }
 
     public function shippingAddress(): BelongsTo
     {
-        return $this->belongsTo(Address::class, 'shipping_address_id', 'id')
-                    ->where('tenant_id', $this->tenant_id);
+        return $this->belongsTo(Address::class, ['tenant_id', 'shipping_address_id'], ['tenant_id', 'id']);
     }
 
     public function billingAddress(): BelongsTo
     {
-        return $this->belongsTo(Address::class, 'billing_address_id', 'id')
-                    ->where('tenant_id', $this->tenant_id);
+        return $this->belongsTo(Address::class, ['tenant_id', 'billing_address_id'], ['tenant_id', 'id']);
     }
 }

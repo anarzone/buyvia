@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tenants', function (Blueprint $table) {
-            $table->ulid('id', 16)->primary();
+            $table->ulid('id')->primary();
             $table->string('name', 255);
             $table->string('slug', 160)->unique();
             $table->string('domain', 255)->nullable()->unique();

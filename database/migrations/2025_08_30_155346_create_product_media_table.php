@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_media', function (Blueprint $table) {
-            $table->ulid('tenant_id', 16);
-            $table->ulid('id', 16);
-            $table->ulid('product_id', 16);
-            $table->ulid('product_variant_id', 16)->nullable();
+            $table->ulid('tenant_id');
+            $table->ulid('id');
+            $table->ulid('product_id');
+            $table->ulid('product_variant_id')->nullable();
             $table->string('url', 512);
             $table->string('alt', 255)->nullable();
             $table->integer('position')->default(0);

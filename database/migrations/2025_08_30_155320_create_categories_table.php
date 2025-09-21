@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->ulid('tenant_id', 16);
-            $table->ulid('id', 16);
-            $table->ulid('parent_id', 16)->nullable();
+            $table->ulid('tenant_id');
+            $table->ulid('id');
+            $table->ulid('parent_id')->nullable();
             $table->string('name', 160);
             $table->string('slug', 160);
             $table->text('description')->nullable();
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->index(['tenant_id', 'parent_id'], 'idx_categories_parent');
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('restrict');
+            $table->foreign(['tenant_id', 'parent_id'])->references(['tenant_id', 'id'])->on('categories')->onDelete('cascade');
         });
     }
 

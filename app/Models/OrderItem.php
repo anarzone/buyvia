@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class OrderItem extends Model
 {
-    use HasUlids, SoftDeletes;
+    use SoftDeletes, Compoships;
 
     protected $fillable = [
+        'tenant_id',
         'order_id',
         'product_name',
         'product_sku',
@@ -26,20 +28,44 @@ class OrderItem extends Model
     protected $casts = [
         'quantity' => 'integer',
         'unit_price_cents' => 'integer',
-        'tax_rate' => 'decimal:4',
+        'tax_rate' => 'decimal:5',
         'total_cents' => 'integer',
         'product_snapshot' => 'array',
         'created_at' => 'datetime:Y-m-d H:i:s.u',
         'updated_at' => 'datetime:Y-m-d H:i:s.u',
     ];
 
+    public function getKeyName(): array
+    {
+        return ['tenant_id', 'id'];
+    }
+
+    protected $primaryKey = ['tenant_id', 'id'];
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::ulid();
+            }
+        });
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
     public function order(): BelongsTo
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, ['tenant_id', 'order_id'], ['tenant_id', 'id']);
     }
 
     public function productVariant(): BelongsTo
     {
-        return $this->belongsTo(ProductVariant::class);
+        return $this->belongsTo(ProductVariant::class, ['tenant_id', 'product_variant_id'], ['tenant_id', 'id']);
     }
 }

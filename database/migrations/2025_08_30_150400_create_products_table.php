@@ -13,8 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->ulid('tenant_id', 16);
-            $table->ulid('id', 16);
+            $table->ulid('tenant_id');
+            $table->ulid('id');
             $table->string('slug', 160);
             $table->string('title', 255);
             $table->string('brand', 120)->nullable();

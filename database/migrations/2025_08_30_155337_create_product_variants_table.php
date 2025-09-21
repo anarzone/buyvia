@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_variants', function (Blueprint $table) {
-            $table->ulid('tenant_id', 16);
-            $table->ulid('id', 16);
-            $table->ulid('product_id', 16);
+            $table->ulid('tenant_id');
+            $table->ulid('id');
+            $table->ulid('product_id');
             $table->string('sku', 64);
             $table->bigInteger('price_cents');
             $table->char('currency', 3);

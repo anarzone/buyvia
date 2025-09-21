@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use App\Enums\ProductStatus;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
-    use HasFactory, HasUlids, SoftDeletes;
+    use HasFactory, SoftDeletes, Compoships;
 
     protected $fillable = [
         'tenant_id',
@@ -27,11 +29,20 @@ class Product extends Model
     protected function casts(): array
     {
         return [
+            'status' => ProductStatus::class,
             'attributes' => 'array',
             'created_at' => 'datetime:Y-m-d H:i:s.u',
             'updated_at' => 'datetime:Y-m-d H:i:s.u',
         ];
     }
+
+    public function getKeyName(): array
+    {
+        return ['tenant_id', 'id'];
+    }
+
+    protected $primaryKey = ['tenant_id', 'id'];
+    public $incrementing = false;
 
     public $timestamps = true;
 
@@ -42,6 +53,17 @@ class Product extends Model
 
     protected $appends = [];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::ulid();
+            }
+        });
+    }
+
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
@@ -49,16 +71,17 @@ class Product extends Model
 
     public function variants(): HasMany
     {
-        return $this->hasMany(ProductVariant::class);
+        return $this->hasMany(ProductVariant::class, ['tenant_id', 'product_id'], ['tenant_id', 'id']);
     }
 
     public function media(): HasMany
     {
-        return $this->hasMany(ProductMedia::class);
+        return $this->hasMany(ProductMedia::class, ['tenant_id', 'product_id'], ['tenant_id', 'id']);
     }
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'product_category');
+        return $this->belongsToMany(Category::class, 'product_category', ['tenant_id', 'product_id'], ['tenant_id', 'category_id'])
+                    ->withPivot('tenant_id');
     }
 }

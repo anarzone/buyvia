@@ -2,23 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class InventoryReservation extends Model
 {
-    use HasUlids, SoftDeletes;
+    use Compoships;
 
-    public $timestamps = false;
+    public $timestamps = true;
+
+    const UPDATED_AT = null; // No updated_at in migration
+    const CREATED_AT = 'created_at';
 
     protected $fillable = [
+        'tenant_id',
         'sku',
-        'location',
+        'order_id',
         'quantity',
-        'reference_type',
-        'reference_id',
         'expires_at',
     ];
 
@@ -28,13 +30,32 @@ class InventoryReservation extends Model
         'created_at' => 'datetime:Y-m-d H:i:s.u',
     ];
 
-    protected $dates = [
-        'expires_at',
-        'created_at',
-    ];
+    protected $primaryKey = ['tenant_id', 'id'];
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::ulid();
+            }
+        });
+    }
+
+    public function getKeyName(): array
+    {
+        return ['tenant_id', 'id'];
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
+    }
 
     public function productVariant(): BelongsTo
     {
-        return $this->belongsTo(ProductVariant::class, 'sku', 'sku');
+        return $this->belongsTo(ProductVariant::class, ['tenant_id', 'sku'], ['tenant_id', 'sku']);
     }
 }

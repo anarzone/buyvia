@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InventoryLevel extends Model
 {
-    use HasUlids, SoftDeletes;
+    use Compoships;
 
     protected $fillable = [
+        'tenant_id',
         'sku',
-        'location',
+        'location_id',
         'on_hand',
         'reserved',
     ];
@@ -21,13 +21,28 @@ class InventoryLevel extends Model
     protected $casts = [
         'on_hand' => 'integer',
         'reserved' => 'integer',
-        'available' => 'integer',
-        'created_at' => 'datetime:Y-m-d H:i:s.u',
         'updated_at' => 'datetime:Y-m-d H:i:s.u',
     ];
 
+    protected $primaryKey = ['tenant_id', 'sku', 'location_id'];
+    public $incrementing = false;
+    public $timestamps = true;
+
+    const CREATED_AT = null; // No created_at in migration
+    const UPDATED_AT = 'updated_at';
+
+    public function getKeyName(): array
+    {
+        return ['tenant_id', 'sku', 'location_id'];
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
     public function productVariant(): BelongsTo
     {
-        return $this->belongsTo(ProductVariant::class, 'sku', 'sku');
+        return $this->belongsTo(ProductVariant::class, ['tenant_id', 'sku'], ['tenant_id', 'sku']);
     }
 }
