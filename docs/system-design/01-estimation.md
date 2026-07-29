@@ -230,9 +230,12 @@ Answers below — don't look first.
 
 ## Scoring yourself
 
-Target by end of Week 1: **12 out of 15 within one order of magnitude, spoken aloud,
+Target to exit Phase 0: **12 out of 15 within one order of magnitude, spoken aloud,
 under 90 seconds each.** Speed matters — in a real interview you're doing this while
 also thinking about design.
+
+After that, keep them as a 10-minute warm-up at the start of every session. Spaced
+repetition holds this far better than one concentrated day.
 
 If you're consistently off by more than 10x, the usual culprit is unit conversion
 (mixing per-day and per-second). Slow down on step 1 of the recipe.

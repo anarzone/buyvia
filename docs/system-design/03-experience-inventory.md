@@ -13,6 +13,12 @@ Getting caught there is far worse than telling a smaller story well.
 
 A modest system you understand completely beats an impressive one you don't.
 
+**One exception, and it grows over time:** code you write yourself in the build exercises
+(`07-build-exercises/`) does qualify. "I implemented inventory reservation with
+pessimistic locking and load-tested it until it oversold" is fully defensible, because
+you made the decisions and watched it fail. As that work accumulates, it becomes a second
+story bank alongside your seven years.
+
 ## What makes a good story
 
 Interviewers are listening for four things:

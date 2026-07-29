@@ -85,7 +85,8 @@ Total out of 28:
 | 14–18 | Borderline — likely mid-level offer, not senior |
 | < 14 | No hire |
 
-**Target: consistent 19+ by week 3, with at least three mocks at 22+.**
+**Phase 0 exit target: a single timed mock at 19+.** Longer term: consistent 22+, since
+you have time to get there.
 
 ## The two disqualifiers
 
