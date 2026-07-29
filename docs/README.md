@@ -33,6 +33,47 @@ Target roles: **mostly backend, some fullstack.** That fixes the order:
 Run one and a half tracks at a time, not three. System design gets the real hours;
 framework internals fills the gaps when you want a break from design practice.
 
+## Workflow — how to run multiple threads
+
+Each track runs in its own Claude Code conversation. A new conversation has **no memory**
+of the others; context transfers through this repo, which is why these README files
+exist.
+
+### Starting a track
+
+1. Make sure `main` is current: `git checkout main && git pull origin main`
+2. Open a new conversation.
+3. Paste the opening prompt from that track's README (`framework-internals/README.md` or
+   `react/README.md`). It tells the new thread what to read.
+
+### Branches
+
+Each session gets its own `claude/...` branch tied to its session ID — threads cannot
+share one. That's fine, because **each track owns a separate folder**, so conflicts are
+unlikely:
+
+| Track | Owns |
+|-------|------|
+| System design | `docs/system-design/` |
+| Framework internals | `docs/framework-internals/` |
+| React | `docs/react/` |
+| *(shared)* | `docs/README.md` — edit rarely, mention it if you do |
+
+Code written for build exercises (`app/`, `tests/`) is shared ground. If two tracks are
+touching application code at once, merge to `main` often.
+
+### Keeping threads in sync
+
+- **Merge to `main` when a chunk of work is done**, not at the very end.
+- **Pull `main` before starting a session** so a thread doesn't work from a stale tree.
+- If a thread has been idle a while, tell it to `git pull origin main` before it writes
+  anything.
+
+### Practical advice
+
+Don't run all three at once. Start framework internals when you want a break from design
+practice; leave React until fullstack interviews actually start appearing.
+
 ## Cross-links
 
 The tracks touch in a few specific places. When you hit these, go deep in the other
