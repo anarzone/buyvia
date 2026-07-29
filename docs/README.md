@@ -18,16 +18,20 @@ them in one thread means neither gets a coherent structure, and long threads los
 Keeping the docs in one repo means your notes stay together even though the
 conversations don't.
 
-## Suggested priority
+## Priority — decided
 
-Depends on the roles you're applying to, but as a default for backend positions:
+Target roles: **mostly backend, some fullstack.** That fixes the order:
 
-1. **System design** — the largest gap relative to 7 years of experience, and the round
-   most likely to be the deciding factor at senior level.
-2. **Framework internals** — compounding value. Helps interviews *and* daily work.
-3. **React** — only if targeting fullstack.
+1. **System design** — primary. Largest gap relative to 7 years of experience, and the
+   round most likely to decide a senior offer.
+2. **Framework internals** — secondary. Compounding value: helps technical depth rounds
+   *and* daily work.
+3. **React** — capped, not skipped. Target "credible, not blank" (~15–20 hours), not
+   fluency. See `react/README.md`. Revisit properly only if fullstack roles start
+   converting.
 
-Running all three at once is possible but slow. Two is realistic alongside applying.
+Run one and a half tracks at a time, not three. System design gets the real hours;
+framework internals fills the gaps when you want a break from design practice.
 
 ## Cross-links
 

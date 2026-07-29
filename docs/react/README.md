@@ -3,21 +3,29 @@
 **Status: not started.** This is a scaffold. The curriculum gets built in its own
 conversation.
 
-## Read this before starting
+## Scope decision: "credible, not blank"
 
-React has the weakest return of the three tracks **if you're applying to backend roles**.
-It has essentially no overlap with system design and doesn't help in a backend technical
-depth round.
+Target roles are **mostly backend, some fullstack**. So this track is deliberately
+**capped at roughly 15–20 hours** rather than run as a full curriculum. The goal is to
+handle the React portion of a fullstack interview honestly and work in a React codebase
+without being lost — not to present as a frontend developer.
 
-It's worth real time in exactly two cases:
+**What "credible" means concretely.** You should be able to:
 
-1. You're targeting **fullstack** positions, where it's not optional.
-2. You want it for its own sake, independent of the job search.
+- Explain the mental model — declarative UI, one-way data flow, why re-rendering isn't
+  redrawing
+- Read an existing component and know what it does
+- Use `useState` and `useEffect` correctly, including the dependency array
+- Explain why you'd reach for React Query rather than hand-rolling fetch-and-cache
+- Say plainly "I'm backend-primary, I work in React when needed" — and have that hold up
 
-If neither applies, deprioritise it until you've landed something. Splitting attention
-three ways while applying daily is how all three tracks end up shallow.
+**What's explicitly out of scope for now:** performance optimisation, advanced patterns,
+SSR/Next.js, state management libraries beyond the basics, animation, and build tooling
+depth. Add them only if fullstack roles start converting into offers.
 
-## Scope, if you do it
+The minimum path is items 1–5 below. Items 6–9 are the "later" pile.
+
+## Full scope, for reference
 
 Your background is backend, so the useful framing is "what's genuinely different here"
 rather than a from-scratch web tutorial.
