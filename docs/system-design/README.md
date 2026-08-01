@@ -200,6 +200,22 @@ No cuts. Roughly ascending difficulty:
 6. **Anar says when something isn't landing**, or when to skip ahead. Silent agreement is
    the one failure mode Claude cannot detect.
 
+## The working loop
+
+Claude is the **moderator** and drives the session:
+
+1. **Claude teaches** the lesson — ground up, simple language, deep on internals.
+2. **Anar confirms** he's understood the theory.
+3. **Claude sets a task:**
+   - Practicable topic (MySQL, Redis, queues) → hands-on against the real thing
+   - Theoretical/architectural topic → practise it inside the ticketing project
+4. **Claude decides** after each task whether to advance the project, and says so.
+
+Anar writes some of the code and asks Claude for the rest. Anar says when to skip a topic
+he already knows, and when something isn't landing.
+
+Curriculum order lives in `LESSONS.md`.
+
 ## Two standing rules
 
 1. **Say it out loud.** The dominant failure mode is knowing the material but freezing

@@ -15,7 +15,7 @@ Status: ✅ done · 🔄 partial · ⬜ not started
 | # | Lesson | Status |
 |---|--------|--------|
 | 1 | How MySQL stores data — pages, clustered index, B+ trees | ✅ |
-| 2 | Indexes in depth — composite, column order, selectivity, covering, `EXPLAIN` | ⬜ |
+| 2 | Indexes in depth — composite, column order, selectivity, covering, `EXPLAIN` | ✅ |
 | 3 | Choosing a data store — relational vs document vs key-value vs wide-column | ⬜ |
 
 ## Phase 2 — Concurrency & data integrity
