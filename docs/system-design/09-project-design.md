@@ -190,3 +190,64 @@ That's the price of durability.
 **Hot-row contention on inventory.** ~800 hold attempts/sec all locking one event's
 inventory row. Named deliberately, not overlooked — it's the first thing to attack in
 Step 5 and the build that follows.
+
+---
+
+## Step 5 — Data model
+
+```sql
+events           id, organizer_id, title, venue, starts_at,
+                 status ENUM(draft, on_sale, closed)
+
+ticket_types     id, event_id, name, price_cents,
+                 quantity_total, quantity_held, quantity_sold
+                 CHECK (quantity_held + quantity_sold <= quantity_total)
+                 CHECK (quantity_held >= 0 AND quantity_sold >= 0)
+
+holds            id, ticket_type_id, user_id, quantity,
+                 status ENUM(active, converted, expired, released),
+                 expires_at DATETIME(6), created_at
+                 INDEX (status, expires_at)      ← the reaper's query
+
+bookings         id, hold_id UNIQUE, user_id, ticket_type_id,
+                 quantity, total_cents,
+                 status ENUM(pending_payment, confirmed, failed)
+
+payments         id, booking_id, provider, provider_ref UNIQUE,
+                 amount_cents, status, raw_payload JSON
+
+outbox_events    id, event_type, aggregate_type, aggregate_id,
+                 payload JSON, occurred_at, published_at NULL
+                 INDEX (published_at, occurred_at)
+
+idempotency_keys key PK, user_id, response JSON, created_at
+```
+
+### Inventory representation — decided
+
+**A counter on `ticket_types`** (`quantity_total / held / sold`), chosen *knowing it's
+the hot row*. Available = total − held − sold.
+
+The alternatives, for when we outgrow it:
+
+- **Row per ticket** — one row per seat; contention spreads across rows. Natural path to
+  seat selection. Costs millions of rows and a trickier "find N available" query.
+- **Bucketed counters** — split inventory into N buckets, hold picks one at random,
+  dividing contention by N. Used in production; needs fallback when a bucket empties.
+
+We start with the counter deliberately so the contention can be **measured** before it's
+optimised away. Building it, load-testing it, and watching requests serialise teaches
+more than being handed the sophisticated version.
+
+### Load-bearing schema details
+
+| Detail | Why |
+|---|---|
+| `CHECK (held + sold <= total)` | Oversell backstop. If locking logic is wrong, the database refuses the write. |
+| `bookings.hold_id UNIQUE` | One hold → one booking. A retried purchase fails at the DB, not in application code. |
+| `payments.provider_ref UNIQUE` | Webhook replays collapse into one payment row. |
+| `holds INDEX (status, expires_at)` | The reaper's sweep. Without it, a full scan every minute that degrades as the system gets busier. |
+
+Three of those four are **idempotency guarantees enforced by constraints rather than
+logic** — the same class of problem as the production incident in
+`03-experience-inventory.md`, solved structurally instead of procedurally.
