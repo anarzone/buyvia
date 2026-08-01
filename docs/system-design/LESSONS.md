@@ -14,8 +14,8 @@ Status: ✅ done · 🔄 partial · ⬜ not started
 
 | # | Lesson | Status |
 |---|--------|--------|
-| 1 | How MySQL stores data — pages, clustered index, B+ trees | ✅ |
-| 2 | Indexes in depth — composite, column order, selectivity, covering, `EXPLAIN` | ✅ |
+| 1 | How MySQL stores data — pages, clustered index, B+ trees | ⬜ |
+| 2 | Indexes in depth — composite, column order, selectivity, covering, `EXPLAIN` | ⬜ |
 | 3 | Choosing a data store — relational vs document vs key-value vs wide-column | ⬜ |
 
 ## Phase 2 — Concurrency & data integrity
@@ -41,9 +41,9 @@ Status: ✅ done · 🔄 partial · ⬜ not started
 
 | # | Lesson | Status |
 |---|--------|--------|
-| 13 | Queues and delivery guarantees — at-most/at-least/exactly-once | ✅ |
-| 14 | Idempotency — four techniques and their limits | ✅ |
-| 15 | Dual-write and the outbox pattern | 🔄 |
+| 13 | Queues and delivery guarantees — at-most/at-least/exactly-once | ⬜ |
+| 14 | Idempotency — four techniques and their limits | ⬜ |
+| 15 | Dual-write and the outbox pattern | ⬜ |
 | 16 | Queue internals — Symfony Messenger and Laravel queues underneath | ⬜ |
 
 ## Phase 5 — Scale & distribution
@@ -89,10 +89,14 @@ Status: ✅ done · 🔄 partial · ⬜ not started
 
 ## Notes
 
-Lessons 13 and 14 were taught early, out of sequence — they arose naturally from a
-production incident in Anar's own history (see `03-experience-inventory.md`). Lesson 15
-is partially covered; the outbox appears in the project architecture but hasn't been
-taught properly yet.
+**Starting from zero.** Nothing is marked complete. Some material was discussed before
+the curriculum was agreed — idempotency and delivery guarantees came up while mining a
+production incident, and storage/indexes were covered in a first pass. Those notes are
+kept in `02-concepts/` as reference, but they don't count as lessons delivered. We run
+the sequence properly from Lesson 1.
+
+A lesson is only marked ✅ after its task is completed, not after the theory is
+delivered.
 
 Build exercises attach to lessons rather than existing separately. Concurrency is where
 the first real code lands: implement a hold, prove it oversells under concurrent load,
