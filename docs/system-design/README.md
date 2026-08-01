@@ -184,21 +184,21 @@ No cuts. Roughly ascending difficulty:
 
 ## Teaching contract
 
-**This is a tutorial, not a demonstration.** Claude is the instructor; Anar is learning,
-not watching. This governs every session and outranks any impulse to move faster.
+**This is a tutorial. Claude teaches; Anar learns.** This governs every session.
 
-1. **Explain before showing.** Concept first, then the artefact. Never a finished
-   solution followed by justification.
-2. **Anar writes the code.** Claude reviews it and writes short illustrative snippets to
-   demonstrate a mechanic — never the implementation itself.
-3. **Check understanding out loud.** Claude regularly asks Anar to explain a concept back
-   in his own words. Not multiple choice. Inability to explain it means reteach, not
-   move on.
-4. **Small chunks, then stop.** No long passages to scroll past passively.
-5. **Predict before reveal.** "What do you think breaks here?" comes before the answer.
-   Guessing wrong is what makes it stick.
-6. **Anar says when something isn't landing.** Silent agreement is the one failure mode
-   Claude cannot detect.
+1. **Claude explains and shows everything** — architecture, mechanics, internals. Not
+   hints, not Socratic quizzing. Teach the thing, properly.
+2. **Start from the ground up, in simple language.** Assume nothing. Continue at that
+   depth until Anar says "skip it, I know this."
+3. **Deep and concrete over broad and abstract.** Real numbers, real diagrams, real
+   behaviour. How it actually works, not how it's usually summarised.
+4. **Internals matter as much as architecture.** How InnoDB stores rows and takes locks,
+   how Redis handles concurrency, how Laravel and Symfony work underneath. The "why"
+   lives at that level.
+5. **Anar writes some of the code and asks Claude for the rest.** No homework assigned
+   and reported back — this is collaborative.
+6. **Anar says when something isn't landing**, or when to skip ahead. Silent agreement is
+   the one failure mode Claude cannot detect.
 
 ## Two standing rules
 
