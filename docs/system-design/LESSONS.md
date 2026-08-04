@@ -1,4 +1,10 @@
-# Lesson Index
+# Lesson Index — RETIRED
+
+> **Superseded by `10-build-plan.md`.** The sequential 30-lesson curriculum was retired
+> in favour of build-first learning with deep dives on demand — it treated an experienced
+> engineer as a blank slate. Kept only as a topic checklist: if a subject below never
+> comes up while building, it's a gap worth closing before interviews.
+
 
 **Organising principle: curriculum-led, project-anchored.** Lessons follow the phase
 order so coverage is guaranteed. The event ticketing project is the worked example
