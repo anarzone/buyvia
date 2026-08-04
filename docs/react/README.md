@@ -54,7 +54,6 @@ Open a new conversation and say something like:
 
 ## Note on this repo
 
-`buyvia` has `vite.config.js` and `resources/js/`, so it's wired for a frontend, but
-there's nothing meaningful there yet. It could host a React frontend against the
-Laravel API — which would have the side benefit of being a fullstack project you built
-end to end.
+The ticketing project ships with `vite.config.js` and `resources/js/`, so it's already
+wired for a frontend. It could host a React UI against the ticketing API — with the side
+benefit of being a fullstack project you built end to end.

@@ -68,14 +68,14 @@ READ SOURCE  →  TRACE  →  BREAK  →  EXPLAIN
   learn what a layer is actually for.
 - **Explain** — out loud, as if in an interview.
 
-The `buyvia` app is a usable subject: `vendor/` has the full Laravel 12 and Symfony
-source once `composer install` has run. See `../system-design/08-local-setup.md`.
+The ticketing app is the subject: `vendor/` holds the full Laravel and Symfony source
+once `composer install` has run.
 
 ## Cross-links to system design
 
-| This track | System design phase |
+| This track | Build step |
 |-----------|--------------------|
-| Symfony Messenger | Phase 4 — Async & messaging |
-| Cache stores and locking | Phase 3 — Caching |
-| Eloquent, query building | Phase 1 — Data & storage |
-| HTTP kernel, middleware | Phase 6 — Delivery & edge |
+| Symfony Messenger | Build step 10 — outbox & workers |
+| Cache stores and locking | Build step 13 — Redis caching |
+| Eloquent, query building | Build step 3 — models & seeding |
+| HTTP kernel, middleware | Build step 4 — browse endpoints |

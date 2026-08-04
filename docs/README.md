@@ -68,13 +68,13 @@ thread rather than duplicating:
 
 | Topic | System design phase | Framework internals |
 |-------|--------------------|--------------------|
-| Queues, retries, failure handling | Phase 4 — Async & messaging | Symfony Messenger transports and middleware |
-| Caching layers | Phase 3 — Caching | Laravel cache stores and repository |
-| Query building, N+1, eager loading | Phase 1 — Data & storage | Eloquent internals |
-| Middleware, request lifecycle | Phase 6 — Delivery & edge | HTTP kernel and pipeline |
+| Queues, retries, failure handling | Build step 10 — outbox & workers | Symfony Messenger transports and middleware |
+| Caching layers | Build step 13 — Redis caching | Laravel cache stores and repository |
+| Query building, N+1, eager loading | Build step 3 — models & seeding | Eloquent internals |
+| Middleware, request lifecycle | Build step 4 — browse endpoints | HTTP kernel and pipeline |
 
 ## Standing rule across all tracks
 
 Code you write yourself counts as your own work and belongs in your story bank
-(`system-design/03-experience-inventory.md`). AI-generated code — including the existing
-`buyvia` schema — does not, and should stay out of interview answers.
+(`system-design/03-experience-inventory.md`). AI-generated code does not, and should stay
+out of interview answers.

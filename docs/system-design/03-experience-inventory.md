@@ -7,17 +7,16 @@ product company, and it is usually the highest-leverage question in the whole lo
 also the one place where 7 years of real work beats any amount of studying.
 
 **Ground rule:** everything in this file must come from work you actually did and can
-defend under three follow-up questions. The `buyvia` repo in this project does not
-qualify — it was AI-assisted, and you cannot defend design decisions you didn't make.
-Getting caught there is far worse than telling a smaller story well.
+defend under three follow-up questions. AI-generated work does not qualify — you cannot
+defend design decisions you didn't make, and getting caught there is far worse than
+telling a smaller story well.
 
 A modest system you understand completely beats an impressive one you don't.
 
-**One exception, and it grows over time:** code you write yourself in the build exercises
-(`07-build-exercises/`) does qualify. "I implemented inventory reservation with
-pessimistic locking and load-tested it until it oversold" is fully defensible, because
-you made the decisions and watched it fail. As that work accumulates, it becomes a second
-story bank alongside your seven years.
+**One exception, and it grows over time:** code you write yourself in the ticketing
+project qualifies. "I implemented ticket holds with pessimistic locking and load-tested it
+until it oversold" is fully defensible — you made the decisions and watched it fail. As
+that work accumulates it becomes a second story bank alongside your seven years.
 
 ## What makes a good story
 

@@ -1,236 +1,61 @@
-# System Design — Learning Track
+# System Design — Event Ticketing Project
 
-Build-first system design study, targeting senior backend roles. Open-ended timeline,
-full topic coverage, hands-on implementation in this repo.
+Build-first system design study for senior backend interviews. We build an event
+ticketing platform and go deep on whatever it touches.
 
-## How this track works
+## How this works
 
-Every phase follows the same loop:
+**Build first, deep dives on demand.** We build the project step by step. When something
+is worth understanding — Laravel internals, request lifecycle, SQL, Eloquent, Redis, AWS,
+React — we stop and go deep right there, in context. No fixed syllabus, no bite-sized
+lessons.
 
-```
-TEACH  →  BUILD  →  VERBALISE  →  DESIGN PROBLEM
-```
+Deep dives are triggered by curiosity, or by Claude flagging *"this step touches X, worth
+a look?"*
 
-1. **Teach** — the concept, properly, with tradeoffs. Not a survey.
-2. **Build** — implement it by hand in `buyvia`. Small and sharp: one concept, a few
-   hours. Specs live in `07-build-exercises/`.
-3. **Verbalise** — explain what you built in interview language, out loud. This is the
-   step people skip, and it's the one the interview actually tests.
-4. **Design problem** — a full 45-minute problem exercising the concept at scale.
-
-Building is the vehicle, not the goal. The point of implementing pessimistic locking is
-to be able to *talk* about concurrency with authority, not to ship a reservation service.
-
-## Structure
+## Files
 
 | File | Purpose |
 |------|---------|
-| `00-framework.md` | The 6-step interview structure. Reread most. |
-| `01-estimation.md` | Back-of-envelope math + 15 drills. Use as warm-up every session. |
-| `02-concepts/` | One file per topic, written as we cover it. |
+| `07-build-plan.md` | **Start here.** The 20-step build sequence and AWS track. |
+| `06-project-design.md` | The architecture: requirements, estimation, API, design, data model — and the reasoning behind each decision. |
+| `00-framework.md` | The 6-step interview structure. Reread before any interview. |
+| `01-estimation.md` | Back-of-envelope math, numbers to memorise, 15 drills with answers. |
+| `02-concepts/` | Deep dive notes, written as topics come up. |
 | `03-experience-inventory.md` | Honest story bank from 7 years of real work. |
-| `04-problems/` | Design problems with model answers and follow-ups. |
-| `05-scoring-rubric.md` | Self-score every practice attempt. |
-| `06-mock-log.md` | Running record of scores and weak spots. |
-| `07-build-exercises/` | Hands-on implementation specs. |
-| `08-local-setup.md` | Getting `buyvia` running on your machine. |
+| `04-scoring-rubric.md` | Senior-level rubric for self-scoring practice attempts. |
+| `05-mock-log.md` | Running record of mock scores and recurring weak spots. |
 
----
+## Working rules
 
-## Phase 0 — Readiness floor
+- **Anar writes some of the code and asks Claude for the rest.** Not homework-and-report.
+- **Claude is the moderator** — drives the sequence, decides when a step is done, flags
+  what's worth pausing on.
+- **Deep dives on demand**, at whatever depth is asked for, in simple language. Continue
+  at that depth until Anar says "skip it, I know this."
+- **Anar says when something isn't landing.** Silent agreement is the one failure mode
+  Claude can't detect.
+- **Deep dive notes go in `02-concepts/`** so they survive the conversation.
 
-**Goal: survive a surprise interview.** You're applying daily, so an interview could land
-before the deep work is done. This phase buys insurance, fast. Everything after it is
-depth with no deadline.
+## Definition of done
 
-- The 6-step framework (`00-framework.md`)
-- Estimation math to the 12/15 target (`01-estimation.md`)
-- Story mining — extract 3–4 defensible war stories (`03-experience-inventory.md`)
-- Fast survey pass of core concepts — enough to not be blank on any of them
-- Two untimed problems, then one timed mock
+A build step is complete when it runs **and** Anar can explain what it does and why.
 
-**Exit criteria:** score 19+ on a timed mock using `05-scoring-rubric.md`.
-
----
-
-## Phase 1 — Data & storage foundations
-
-Relational modelling, normalisation and when to break it. How indexes actually work
-(B-trees, selectivity, covering indexes, composite index column order). Reading query
-plans. Storage engine basics. SQL vs document vs key-value vs wide-column, and how to
-choose without hand-waving.
-
-**Build:** seed `buyvia` with millions of rows, find the slow queries, fix them with
-indexes, measure the difference. Read an `EXPLAIN` plan and understand every column.
-
----
-
-## Phase 2 — Concurrency & data integrity
-
-Transactions and isolation levels (and what each one actually prevents). Race conditions
-on shared resources. Pessimistic vs optimistic locking. Deadlocks. Idempotency as a
-design principle.
-
-**Build:** implement `InventoryReservationService` with `SELECT ... FOR UPDATE`. Then
-*prove* it works — write a concurrent load test that oversells without the lock and
-doesn't with it. Implement an optimistic-locking variant and compare under contention.
-
----
-
-## Phase 3 — Caching & performance
-
-Cache-aside, write-through, write-behind, refresh-ahead. TTL strategy. Invalidation, the
-genuinely hard part. Stampedes and thundering herds. Hot keys. Redis data structures
-beyond `GET`/`SET`. Cache as performance optimisation vs cache as availability dependency.
-
-**Build:** a caching layer for the product catalogue. Deliberately trigger a stampede
-under load, then fix it with locking and jitter. Measure both.
-
----
-
-## Phase 4 — Async & messaging
-
-Queues and workers. At-least-once vs at-most-once, and why exactly-once is mostly a lie.
-Dead-letter queues, poison messages, backpressure. Ordering guarantees. The dual-write
-problem and the outbox pattern. Event-driven architecture and its costs.
-
-**Build:** an outbox drainer plus a genuinely idempotent consumer. Break it on purpose —
-duplicate delivery, out-of-order arrival, consumer crash mid-processing.
-
-> Cross-links to the Symfony internals track: Messenger's transport, retry and failure
-> handling are worth reading in source alongside this phase.
-
----
-
-## Phase 5 — Scale & distribution
-
-Replication topologies. Replication lag and everything it breaks — especially
-read-your-own-writes. Sharding: choosing a shard key, hotspotting, cross-shard queries,
-and the pain of resharding. Partitioning strategies. Consistency models, CAP stated
-correctly, and PACELC.
-
-**Build:** configure Laravel's read/write connection split, then *demonstrate* the
-read-your-writes bug and fix it. Implement tenant-based partitioning using the existing
-`Tenant` model.
-
----
-
-## Phase 6 — Delivery & edge
-
-Load balancing: L4 vs L7, algorithms, health checks, connection draining. Stateless
-application tiers and where session state actually goes. CDNs, edge caching, and cache
-headers that work. Reverse proxies and API gateways. TLS termination. DNS-level routing.
-
-**Build:** nginx in front of two app instances. Demonstrate what breaks with sticky
-sessions, then make the tier genuinely stateless.
-
----
-
-## Phase 7 — Search & feeds
-
-Inverted indexes and why databases are bad at text search. Elasticsearch/OpenSearch
-fundamentals: analysis, relevance scoring, index design. Autocomplete and typeahead.
-Feed generation: fan-out on write vs fan-out on read, and the celebrity problem. Ranking.
-
-**Build:** product search with a real inverted index. A simple activity feed implemented
-both ways, with a measured comparison.
-
----
-
-## Phase 8 — Reliability & operations
-
-Rate limiting: token bucket, leaky bucket, sliding window. Retries, exponential backoff,
-jitter. Circuit breakers and bulkheads. Graceful degradation and load shedding. Timeouts
-and cascading failure. Observability: metrics, logs, traces, and what an SLO actually is.
-
-**Build:** a token-bucket rate limiter in Redis. A circuit breaker around a flaky
-dependency. Then instrument something and answer "how would I know this broke at 3am?"
-
----
-
-## Phase 9 — Security & multi-tenancy
-
-Authentication vs authorisation at scale. Sessions vs tokens vs JWTs and their tradeoffs.
-Tenant isolation models — shared table, schema-per-tenant, database-per-tenant. Noisy
-neighbours. Blast radius. Secrets handling.
-
-**Build:** tenant scoping with per-tenant quotas and rate limits.
-
----
-
-## Running throughout
-
-- **Estimation warm-up** — 10 minutes of drills at the start of every session. Spaced
-  repetition beats one dedicated day.
-- **One design problem per phase**, written up in `04-problems/`.
-- **A mock interview every two phases**, scored in `06-mock-log.md`.
-
-## Full problem set
-
-No cuts. Roughly ascending difficulty:
-
-1. URL shortener
-2. E-commerce checkout with inventory
-3. Rate limiter
-4. Payment processing with idempotency and webhooks
-5. Notification / email delivery
-6. Multi-tenant SaaS data isolation
-7. Product search with autocomplete
-8. Activity / news feed
-9. Chat and messaging
-10. File storage (Dropbox-style)
-11. Ride-sharing / geospatial matching
-12. Video streaming
-
-## Teaching contract
-
-**This is a tutorial. Claude teaches; Anar learns.** This governs every session.
-
-1. **Claude explains and shows everything** — architecture, mechanics, internals. Not
-   hints, not Socratic quizzing. Teach the thing, properly.
-2. **Start from the ground up, in simple language.** Assume nothing. Continue at that
-   depth until Anar says "skip it, I know this."
-3. **Deep and concrete over broad and abstract.** Real numbers, real diagrams, real
-   behaviour. How it actually works, not how it's usually summarised.
-4. **Internals matter as much as architecture.** How InnoDB stores rows and takes locks,
-   how Redis handles concurrency, how Laravel and Symfony work underneath. The "why"
-   lives at that level.
-5. **Anar writes some of the code and asks Claude for the rest.** No homework assigned
-   and reported back — this is collaborative.
-6. **Anar says when something isn't landing**, or when to skip ahead. Silent agreement is
-   the one failure mode Claude cannot detect.
-
-## The working loop
-
-Claude is the **moderator** and drives the session:
-
-1. **Claude teaches** the lesson — ground up, simple language, deep on internals.
-2. **Anar confirms** he's understood the theory.
-3. **Claude sets a task:**
-   - Practicable topic (MySQL, Redis, queues) → hands-on against the real thing
-   - Theoretical/architectural topic → practise it inside the ticketing project
-4. **Claude decides** after each task whether to advance the project, and says so.
-
-Anar writes some of the code and asks Claude for the rest. Anar says when to skip a topic
-he already knows, and when something isn't landing.
-
-Curriculum order lives in `LESSONS.md`.
+The concurrency work (build plan steps 5–7) is verified by a concurrent test that
+oversells before the fix and doesn't after — measured, not asserted.
 
 ## Two standing rules
 
 1. **Say it out loud.** The dominant failure mode is knowing the material but freezing
    when speaking. Silent reading builds false confidence.
 
-2. **The `buyvia` schema is a textbook, not a credential.** The existing migrations and
-   models were AI-assisted and don't represent your design reasoning — keep them out of
-   interview answers. **Code you write yourself in the build exercises is different:**
-   that you own, and it belongs in your story bank.
+2. **Only claim work you actually did.** Code written by hand in this project belongs in
+   the story bank and can be defended in an interview. AI-generated code cannot — an
+   interviewer's follow-up questions will find the gap, and that's far worse than having
+   a smaller story.
 
 ## Related tracks
 
-Run these as separate conversations, writing into this same repo:
-
-- `docs/framework-internals/` — Symfony and Laravel internals. Complementary prep, but
-  aimed at coding and technical-depth rounds rather than system design. Overlaps this
-  track at Messenger (Phase 4) and cache/queue layers (Phase 3).
-- `docs/react/` — frontend. No meaningful overlap with this track.
+- `../framework-internals/` — Laravel and Symfony internals. Complementary prep, aimed at
+  technical depth rounds rather than design rounds.
+- `../react/` — frontend, capped scope. Only matters for fullstack roles.

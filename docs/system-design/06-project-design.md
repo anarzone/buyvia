@@ -3,8 +3,8 @@
 A fresh Laravel project, designed from zero. This file records the design decisions and,
 more importantly, **why** each one was made — the reasoning is the part worth rereading.
 
-> Replaces `buyvia` as the working substrate. `buyvia` was AI-assisted, so its decisions
-> aren't ours to defend. Every decision below was made deliberately.
+> Every decision below was made deliberately and can be defended. That's the point of
+> designing it from scratch rather than inheriting a schema.
 
 Sequence followed: **Requirements → Estimation → API → High-level design → Data model.**
 
