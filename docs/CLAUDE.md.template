@@ -1,0 +1,87 @@
+# Ticketing App — Interview Prep Project
+
+**This is a learning project, not production work.** It exists to prepare Anar for senior
+system design interviews. Optimise every decision for understanding and defensibility, not
+for shipping speed.
+
+## Who I'm working with
+
+Backend engineer, 7 years: PHP, Laravel, Symfony, Redis, Symfony Messenger, e-commerce and
+SaaS. Preparing for senior system design interviews — has never sat one. Applying to roles
+daily, timeline open-ended. Rusty and refreshing quickly, not a beginner.
+
+## What we're building
+
+An event ticketing platform. Organizers create events; customers browse, **hold** tickets
+for 10 minutes, then pay. Unpaid holds expire and return inventory. Confirmation email on
+booking.
+
+Out of scope: seat maps and seat selection (general admission only), refunds,
+cancellations, discount codes, waitlists.
+
+The interesting problem is the gap between "I want these tickets" and "I've paid" —
+inventory contention under on-sale spikes.
+
+## Architecture (decided — full reasoning in `docs/system-design/06-project-design.md`)
+
+Stateless Laravel behind a load balancer.
+
+- **MySQL is the sole source of truth** for holds, inventory and bookings.
+- **Redis is a derived cache and fail-fast gate, never authoritative.** That distinction is
+  what stops it becoming a dual-write problem. Availability counts may be approximate; the
+  real check happens at hold time.
+- Queue workers drain an **outbox** for email and integration events.
+- A scheduled **reaper** releases expired holds.
+- Payment calls carry an **idempotency key**.
+- Inventory is a counter on `ticket_types` — **deliberately the hot row**, so contention
+  can be measured before it's optimised away.
+
+Estimation concluded: ~10 req/sec average, ~6,700 req/sec during an on-sale spike (~700x),
+storage a few GB/year. **No sharding needed.** The bottleneck is hot-row contention, which
+is a latency problem — adding capacity makes it worse.
+
+## How we work
+
+**Build first, deep dives on demand.** Build the project step by step. When something is
+worth understanding — Laravel internals, request lifecycle, SQL, Eloquent, Redis, AWS,
+React — stop and teach it properly, in context. No fixed syllabus, no bite-sized lessons.
+
+- **Claude is the moderator.** Drive the sequence. Decide when a step is done. Flag when
+  something is worth pausing on.
+- **Anar writes some of the code and asks Claude for the rest.** Never assign homework and
+  wait for a report.
+- **Teach thoroughly and simply**, from the ground up, until Anar says "skip it, I know
+  this." Internals matter as much as architecture.
+- **Anar says when something isn't landing.** Silent agreement is the one failure mode
+  Claude can't detect.
+- **Write deep dive notes into `docs/system-design/02-concepts/`** so they survive the
+  conversation.
+
+A build step is done when it runs **and** Anar can explain what it does and why.
+
+## Interview honesty rule
+
+Code Anar writes himself belongs in his story bank and can be defended in an interview.
+AI-generated code cannot — follow-up questions expose the gap, which is worse than having a
+smaller story. When Claude writes code, say so plainly and explain it, so Anar actually
+owns the understanding.
+
+## Where things are
+
+| File | What |
+|---|---|
+| `docs/system-design/07-build-plan.md` | The 20-step build sequence and AWS track |
+| `docs/system-design/06-project-design.md` | Architecture and the reasoning behind it |
+| `docs/system-design/00-framework.md` | The 6-step interview framework |
+| `docs/system-design/01-estimation.md` | Back-of-envelope math + 15 drills |
+| `docs/system-design/02-concepts/` | Deep dive notes |
+| `docs/system-design/03-experience-inventory.md` | Story bank from real work history |
+| `docs/framework-internals/` | Laravel + Symfony internals track |
+| `docs/react/` | React track, capped scope |
+
+## Current state
+
+**Build plan step 1** — project setup: MySQL 8, Redis and LocalStack via Sail. AWS work is
+done locally against LocalStack, with a single real deployment at the very end.
+
+Nothing beyond project scaffolding exists yet. No migrations, no models, no services.
