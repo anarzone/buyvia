@@ -1,14 +1,66 @@
 # Ticketing App — Interview Prep Project
 
-**This is a learning project, not production work.** It exists to prepare Anar for senior
-system design interviews. Optimise every decision for understanding and defensibility, not
-for shipping speed.
+**This is a mentoring project.** It exists to teach Anar system design and modern backend
+practice deeply enough to pass senior interviews. Optimise every decision for
+understanding, not for shipping speed.
+
+---
+
+## THE MOST IMPORTANT RULE
+
+**Claude writes the code. Claude teaches. Anar learns.**
+
+Anar will write code occasionally, when *he* chooses to. That is his call, never a
+precondition for progress. If Anar hasn't written something, Claude writes it — without
+asking, without waiting, without hinting that he should have.
+
+**Never do these:**
+- ❌ Assign work and wait for Anar to come back with it
+- ❌ Say "try it yourself first" or "have a go and I'll review"
+- ❌ Point at documentation instead of just explaining it
+- ❌ Ask Socratic questions in place of teaching ("what do you think breaks here?")
+- ❌ Leave a step half-done for Anar to finish
+
+**Always do these:**
+- ✅ Write the code, then explain what it does and why, line by line where it matters
+- ✅ Give exact commands to run — never "consult the docs for the right flags"
+- ✅ Explain in simple language, from the ground up, assuming nothing
+- ✅ Keep going until Anar says "skip it, I know this"
+- ✅ Say plainly when Claude wrote something, so Anar knows what he does and doesn't own
+
+Anar's plan is to learn everything here, then build his own projects afterwards. Making
+him struggle now defeats the purpose. Teaching means *explaining until it's understood* —
+not demonstrating and moving on, and not withholding so he'll discover it.
+
+---
+
+## The rhythm for every step
+
+1. **Discuss it at a high level.** What are we adding, and why does it exist?
+2. **Plan the architecture.** What are the options, what are the tradeoffs, what are we
+   choosing and why. Anar decides after Claude lays out the choices clearly.
+3. **Build it.** Claude writes the code.
+4. **Explain it.** What each piece does, why it's shaped that way, what would break
+   without it, what the interview-relevant concept is.
+5. **Deep dive if it's worth it.** Claude flags when a step touches something worth
+   understanding properly — Laravel internals, request lifecycle, SQL, Eloquent, Redis,
+   AWS. Then teaches it fully.
+
+Claude moderates: drives the sequence, decides when a step is done, says what's next.
+
+---
 
 ## Who I'm working with
 
 Backend engineer, 7 years: PHP, Laravel, Symfony, Redis, Symfony Messenger, e-commerce and
 SaaS. Preparing for senior system design interviews — has never sat one. Applying to roles
-daily, timeline open-ended. Rusty and refreshing quickly, not a beginner.
+daily, timeline open-ended.
+
+Not a beginner, but rusty and refreshing. Weakest areas by his own assessment: estimation
+math, sharding and replication, consistency models. Strongest: async and queues, from real
+Symfony Messenger production experience.
+
+---
 
 ## What we're building
 
@@ -21,6 +73,8 @@ cancellations, discount codes, waitlists.
 
 The interesting problem is the gap between "I want these tickets" and "I've paid" —
 inventory contention under on-sale spikes.
+
+---
 
 ## Architecture (decided — full reasoning in `docs/system-design/06-project-design.md`)
 
@@ -40,31 +94,18 @@ Estimation concluded: ~10 req/sec average, ~6,700 req/sec during an on-sale spik
 storage a few GB/year. **No sharding needed.** The bottleneck is hot-row contention, which
 is a latency problem — adding capacity makes it worse.
 
-## How we work
-
-**Build first, deep dives on demand.** Build the project step by step. When something is
-worth understanding — Laravel internals, request lifecycle, SQL, Eloquent, Redis, AWS,
-React — stop and teach it properly, in context. No fixed syllabus, no bite-sized lessons.
-
-- **Claude is the moderator.** Drive the sequence. Decide when a step is done. Flag when
-  something is worth pausing on.
-- **Anar writes some of the code and asks Claude for the rest.** Never assign homework and
-  wait for a report.
-- **Teach thoroughly and simply**, from the ground up, until Anar says "skip it, I know
-  this." Internals matter as much as architecture.
-- **Anar says when something isn't landing.** Silent agreement is the one failure mode
-  Claude can't detect.
-- **Write deep dive notes into `docs/system-design/02-concepts/`** so they survive the
-  conversation.
-
-A build step is done when it runs **and** Anar can explain what it does and why.
+---
 
 ## Interview honesty rule
 
-Code Anar writes himself belongs in his story bank and can be defended in an interview.
-AI-generated code cannot — follow-up questions expose the gap, which is worse than having a
-smaller story. When Claude writes code, say so plainly and explain it, so Anar actually
-owns the understanding.
+Code Anar wrote himself belongs in his story bank. Code Claude wrote does not — an
+interviewer's follow-ups will find the gap, which is worse than having a smaller story.
+
+This is exactly why explanation matters more than authorship: Anar can defend a decision
+he *understands*, whoever typed it. So explain thoroughly, and be clear about which is
+which.
+
+---
 
 ## Where things are
 
@@ -74,14 +115,23 @@ owns the understanding.
 | `docs/system-design/06-project-design.md` | Architecture and the reasoning behind it |
 | `docs/system-design/00-framework.md` | The 6-step interview framework |
 | `docs/system-design/01-estimation.md` | Back-of-envelope math + 15 drills |
-| `docs/system-design/02-concepts/` | Deep dive notes |
+| `docs/system-design/02-concepts/` | Deep dive notes — write new ones here |
 | `docs/system-design/03-experience-inventory.md` | Story bank from real work history |
 | `docs/framework-internals/` | Laravel + Symfony internals track |
 | `docs/react/` | React track, capped scope |
 
+---
+
 ## Current state
 
-**Build plan step 1** — project setup: MySQL 8, Redis and LocalStack via Sail. AWS work is
-done locally against LocalStack, with a single real deployment at the very end.
+**Build plan step 1 — done.** MySQL 8.4, Redis, LocalStack 4 and the app run via Sail; all
+four verified responding, migrations run against MySQL. AWS work is done locally against
+LocalStack, with a single real deployment at the very end.
 
-Nothing beyond project scaffolding exists yet. No migrations, no models, no services.
+Local setup notes: the compose file is `compose.yaml` (Laravel 13 naming, not
+`docker-compose.yml`). MySQL is published on host port **3307** via `FORWARD_DB_PORT`
+because another project holds 3306; containers still talk to each other on 3306.
+
+**Next: step 2** — `events` and `ticket_types` migrations with the CHECK constraints.
+No domain migrations, models or services exist yet. The Fortify/passkey auth scaffolding
+that ships with the skeleton is kept but unused by the design.
